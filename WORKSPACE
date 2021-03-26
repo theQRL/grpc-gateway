@@ -1,4 +1,4 @@
-workspace(name = "grpc_ecosystem_grpc_gateway")
+workspace(name = "prysmaticlabs_grpc_gateway")
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
