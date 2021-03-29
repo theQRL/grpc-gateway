@@ -26,6 +26,7 @@ type binding struct {
 	*descriptor.Binding
 	Registry          *descriptor.Registry
 	AllowPatchFeature bool
+	TypeFromName func(string) string
 }
 
 // GetBodyFieldPath returns the binding body's fieldpath.
@@ -148,6 +149,17 @@ type trailerParams struct {
 	RegisterFuncSuffix string
 }
 
+func typeFromName(name string) string {
+	if strings.Contains(name, "Epoch") {
+		return "types.Epoch"
+	} else if strings.Contains(name, "Slot") {
+		return "types.Slot"
+	} else if strings.Contains(name, "Index") {
+		return "types.ValidatorIndex"
+	}
+	return ""
+}
+
 func applyTemplate(p param, reg *descriptor.Registry) (string, error) {
 	w := bytes.NewBuffer(nil)
 	if err := headerTemplate.Execute(w, p); err != nil {
@@ -175,6 +187,7 @@ func applyTemplate(p param, reg *descriptor.Registry) (string, error) {
 					Binding:           b,
 					Registry:          reg,
 					AllowPatchFeature: p.AllowPatchFeature,
+					TypeFromName: typeFromName,
 				}); err != nil {
 					return "", err
 				}
@@ -184,6 +197,7 @@ func applyTemplate(p param, reg *descriptor.Registry) (string, error) {
 					Binding:           b,
 					Registry:          reg,
 					AllowPatchFeature: p.AllowPatchFeature,
+					TypeFromName: typeFromName,
 				}); err != nil {
 					return "", err
 				}
@@ -306,6 +320,7 @@ func request_{{.Method.Service.GetName}}_{{.Method.GetName}}_{{.Index}}(ctx cont
 
 	_ = template.Must(handlerTemplate.New("client-rpc-request-func").Parse(`
 {{$AllowPatchFeature := .AllowPatchFeature}}
+{{$TypeFromName := .TypeFromName}}
 {{if .HasQueryParam}}
 var (
 	filter_{{.Method.Service.GetName}}_{{.Method.GetName}}_{{.Index}} = {{.QueryParamFilter}}
@@ -373,7 +388,7 @@ var (
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", {{$param | printf "%q"}}, err)
 	}
-	{{$param.AssignableExpr "protoReq"}} = {{$param | printf "%T"}}({{$param}})
+	{{$param.AssignableExpr "protoReq"}} = {{$param | printf "%q" | call $TypeFromName}}({{$param}})
 {{end}}
 {{if and $enum $param.IsRepeated}}
 	s := make([]{{$enum.GoType $param.Method.Service.File.GoPkg.Path}}, len(es))
@@ -482,6 +497,7 @@ func local_request_{{.Method.Service.GetName}}_{{.Method.GetName}}_{{.Index}}(ct
 
 	_ = template.Must(localHandlerTemplate.New("local-client-rpc-request-func").Parse(`
 {{$AllowPatchFeature := .AllowPatchFeature}}
+{{$TypeFromName := .TypeFromName}}
 {{template "local-request-func-signature" .}} {
 	var protoReq {{.Method.RequestType.GoType .Method.Service.File.GoPkg.Path}}
 	var metadata runtime.ServerMetadata
@@ -544,7 +560,7 @@ func local_request_{{.Method.Service.GetName}}_{{.Method.GetName}}_{{.Index}}(ct
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", {{$param | printf "%q"}}, err)
 	}
-	{{$param.AssignableExpr "protoReq"}} = {{$param | printf "%T"}}({{$param}})
+	{{$param.AssignableExpr "protoReq"}} = {{$param | printf "%q" | call $TypeFromName}}({{$param}})
 {{end}}
 
 {{if and $enum $param.IsRepeated}}
