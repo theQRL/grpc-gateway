@@ -150,11 +150,14 @@ type trailerParams struct {
 }
 
 func typeFromName(name string) string {
-	if strings.Contains(name, "Epoch") {
+	lowerName := strings.ToLower(name)
+	if strings.Contains(lowerName, "epoch") {
 		return "types.Epoch"
-	} else if strings.Contains(name, "Slot") {
+	}
+	else if strings.Contains(lowerName, "slot") {
 		return "types.Slot"
-	} else if strings.Contains(name, "Index") {
+	}
+	else if strings.Contains(lowerName, "index") {
 		return "types.ValidatorIndex"
 	}
 	return ""
