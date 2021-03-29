@@ -153,11 +153,9 @@ func typeFromName(name string) string {
 	lowerName := strings.ToLower(name)
 	if strings.Contains(lowerName, "epoch") {
 		return "types.Epoch"
-	}
-	else if strings.Contains(lowerName, "slot") {
+	} else if strings.Contains(lowerName, "slot") {
 		return "types.Slot"
-	}
-	else if strings.Contains(lowerName, "index") {
+	} else if strings.Contains(lowerName, "index") {
 		return "types.ValidatorIndex"
 	}
 	return ""
