@@ -1190,3 +1190,21 @@ def go_repositories():
         sum = "h1:uFRZXykJGK9lLY4HtgSw44DnIcAM+kRBP7x5m+NpAOM=",
         version = "v1.16.0",
     )
+    go_repository(
+        name = "com_github_prysmaticlabs_eth2_types",
+        importpath = "github.com/prysmaticlabs/eth2-types",
+        sum = "h1:1dN7YAqMN3oAJ0LceWcyv/U4jHLh+5urnSnr4br6zg4=",
+        version = "v0.0.0-20210303084904-c9735a06829d",
+    )
+    go_repository(
+        name = "com_github_ferranbt_fastssz",
+        importpath = "github.com/ferranbt/fastssz",
+        sum = "h1:9VDpsWq096+oGMDTT/SgBD/VgZYf4pTF+KTPmZ+OaKM=",
+        version = "v0.0.0-20210120143747-11b9eff30ea9",
+    )
+    go_repository(
+        name = "com_github_minio_sha256_simd",
+        importpath = "github.com/minio/sha256-simd",
+        sum = "h1:5QHSlgo3nt5yKOJrC7W8w7X+NFl8cMPZm96iu8kKUJU=",
+        version = "v0.1.1",
+    )
