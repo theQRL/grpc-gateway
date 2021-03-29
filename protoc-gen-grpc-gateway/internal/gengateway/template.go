@@ -256,6 +256,7 @@ var _ = utilities.NewDoubleArray
 var _ = metadata.Join
 var _ = github_com_prysmaticlabs_eth2_types.Epoch(0)
 var _ = emptypb.Empty{}
+var _ = empty.Empty{}
 `))
 
 	handlerTemplate = template.Must(template.New("handler").Parse(`
