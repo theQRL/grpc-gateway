@@ -242,7 +242,7 @@ package {{.GoPkg.Name}}
 import (
 	github_com_prysmaticlabs_eth2_types "github.com/prysmaticlabs/eth2-types"
 	emptypb "github.com/golang/protobuf/ptypes/empty"
-	"github.com/golang/protobuf/ptypes/empty"
+	emptypbb "github.com/golang/protobuf/ptypes/empty"
 	{{range $i := .Imports}}{{if $i.Standard}}{{$i | printf "%s\n"}}{{end}}{{end}}
 
 	{{range $i := .Imports}}{{if not $i.Standard}}{{$i | printf "%s\n"}}{{end}}{{end}}
@@ -257,7 +257,7 @@ var _ = utilities.NewDoubleArray
 var _ = metadata.Join
 var _ = github_com_prysmaticlabs_eth2_types.Epoch(0)
 var _ = emptypb.Empty{}
-var _ = empty.Empty{}
+var _ = emptypbb.Empty{}
 `))
 
 	handlerTemplate = template.Must(template.New("handler").Parse(`
