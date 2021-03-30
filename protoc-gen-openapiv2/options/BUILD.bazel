@@ -16,10 +16,6 @@ go_library(
     name = "go_default_library",
     embed = [":options_go_proto"],
     importpath = "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options",
-    deps = [
-        "@com_github_golang_protobuf//protoc-gen-go/descriptor:go_default_library",
-        "@com_github_golang_protobuf//ptypes/struct:go_default_library",
-    ]
 )
 
 proto_library(
