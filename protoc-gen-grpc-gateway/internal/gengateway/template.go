@@ -255,9 +255,7 @@ import (
 	github_com_prysmaticlabs_eth2_types "github.com/prysmaticlabs/eth2-types"
 	emptypb "github.com/golang/protobuf/ptypes/empty"
 	"github.com/golang/protobuf/ptypes/empty"
-	{{range $i := .Imports}}{{if $i.Standard | printf "%q" | ne "github.com/golang/protobuf/ptypes/empty"}}{{$i | printf "%s\n"}}{{end}}{{end}}
-
-	{{range $i := .Imports}}{{if not $i.Standard}}{{$i | printf "%s\n"}}{{end}}{{end}}
+	{{range $i := .Imports}}{{if $i | printf "%q" | ne "github.com/golang/protobuf/ptypes/empty"}}{{$i | printf "%s\n"}}{{end}}{{end}}
 )
 
 // Suppress "imported and not used" errors
