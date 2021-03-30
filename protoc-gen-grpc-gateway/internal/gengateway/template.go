@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"log"
 	"strings"
 	"text/template"
 
@@ -170,7 +171,9 @@ func applyTemplate(p param, reg *descriptor.Registry) (string, error) {
 
 	filteredImports := make([]descriptor.GoPackage, 0, len(p.Imports))
 	for _, goPackage := range p.Imports {
+		log.Println(goPackage.Path)
 		if goPackage.Path == "github.com/golang/protobuf/ptypes/empty" {
+			log.Println("skip")
 			continue
 		}
 		filteredImports = append(filteredImports, goPackage)
