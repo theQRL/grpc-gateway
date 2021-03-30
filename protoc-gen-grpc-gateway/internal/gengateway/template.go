@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"log"
 	"strings"
 	"text/template"
 
@@ -169,16 +168,16 @@ func applyTemplate(p param, reg *descriptor.Registry) (string, error) {
 	}
 	var targetServices []*descriptor.Service
 
-	filteredImports := make([]descriptor.GoPackage, 0, len(p.Imports))
-	for _, goPackage := range p.Imports {
-		log.Println(goPackage.Path)
-		if goPackage.Path == "github.com/golang/protobuf/ptypes/empty" {
-			log.Println("skip")
-			continue
-		}
-		filteredImports = append(filteredImports, goPackage)
-	}
-	p.Imports = filteredImports
+	//filteredImports := make([]descriptor.GoPackage, 0, len(p.Imports))
+	//for _, goPackage := range p.Imports {
+	//	log.Println(goPackage.Path)
+	//	if goPackage.Path ==  {
+	//		log.Println("skip")
+	//		continue
+	//	}
+	//	filteredImports = append(filteredImports, goPackage)
+	//}
+	//p.Imports = filteredImports
 
 	for _, msg := range p.Messages {
 		msgName := casing.Camel(*msg.Name)
@@ -256,7 +255,7 @@ import (
 	github_com_prysmaticlabs_eth2_types "github.com/prysmaticlabs/eth2-types"
 	emptypb "github.com/golang/protobuf/ptypes/empty"
 	"github.com/golang/protobuf/ptypes/empty"
-	{{range $i := .Imports}}{{if $i.Standard}}{{$i | printf "%s\n"}}{{end}}{{end}}
+	{{range $i := .Imports}}{{if $i.Standard | printf "%q" | ne "github.com/golang/protobuf/ptypes/empty"}}{{$i | printf "%s\n"}}{{end}}{{end}}
 
 	{{range $i := .Imports}}{{if not $i.Standard}}{{$i | printf "%s\n"}}{{end}}{{end}}
 )
