@@ -155,6 +155,8 @@ func typeFromName(name string) string {
 		return "github_com_prysmaticlabs_eth2_types.Epoch"
 	} else if strings.Contains(lowerName, "slot") {
 		return "github_com_prysmaticlabs_eth2_types.Slot"
+	} else if strings.Contains(lowerName, "committee") {
+		return "github_com_prysmaticlabs_eth2_types.CommitteeIndex"
 	} else if strings.Contains(lowerName, "index") {
 		return "github_com_prysmaticlabs_eth2_types.ValidatorIndex"
 	}
@@ -168,17 +170,6 @@ func applyTemplate(p param, reg *descriptor.Registry) (string, error) {
 	}
 	var targetServices []*descriptor.Service
 
-	//filteredImports := make([]descriptor.GoPackage, 0, len(p.Imports))
-	//for _, goPackage := range p.Imports {
-	//	log.Println(goPackage.Path)
-	//	if goPackage.Path ==  {
-	//		log.Println("skip")
-	//		continue
-	//	}
-	//	filteredImports = append(filteredImports, goPackage)
-	//}
-	//p.Imports = filteredImports
-
 	for _, msg := range p.Messages {
 		msgName := casing.Camel(*msg.Name)
 		msg.Name = &msgName
@@ -186,7 +177,6 @@ func applyTemplate(p param, reg *descriptor.Registry) (string, error) {
 
 	for _, svc := range p.Services {
 		var methodWithBindingsSeen bool
-
 		svcName := casing.Camel(*svc.Name)
 		svc.Name = &svcName
 
