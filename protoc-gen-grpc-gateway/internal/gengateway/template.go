@@ -26,7 +26,7 @@ type binding struct {
 	*descriptor.Binding
 	Registry          *descriptor.Registry
 	AllowPatchFeature bool
-	TypeFromName func(string) string
+	TypeFromName      func(string) string
 }
 
 // GetBodyFieldPath returns the binding body's fieldpath.
@@ -152,13 +152,13 @@ type trailerParams struct {
 func typeFromName(name string) string {
 	lowerName := strings.ToLower(name)
 	if strings.Contains(lowerName, "epoch") {
-		return "github_com_prysmaticlabs_eth2_types.Epoch"
+		return "github_com_prysmaticlabs_prysm_consensus_types_primitives.Epoch"
 	} else if strings.Contains(lowerName, "slot") {
-		return "github_com_prysmaticlabs_eth2_types.Slot"
+		return "github_com_prysmaticlabs_prysm_consensus_types_primitives.Slot"
 	} else if strings.Contains(lowerName, "committee") {
-		return "github_com_prysmaticlabs_eth2_types.CommitteeIndex"
+		return "github_com_prysmaticlabs_prysm_consensus_types_primitives.CommitteeIndex"
 	} else if strings.Contains(lowerName, "index") {
-		return "github_com_prysmaticlabs_eth2_types.ValidatorIndex"
+		return "github_com_prysmaticlabs_prysm_consensus_types_primitives.ValidatorIndex"
 	}
 	return ""
 }
@@ -190,7 +190,7 @@ func applyTemplate(p param, reg *descriptor.Registry) (string, error) {
 					Binding:           b,
 					Registry:          reg,
 					AllowPatchFeature: p.AllowPatchFeature,
-					TypeFromName: typeFromName,
+					TypeFromName:      typeFromName,
 				}); err != nil {
 					return "", err
 				}
@@ -200,7 +200,7 @@ func applyTemplate(p param, reg *descriptor.Registry) (string, error) {
 					Binding:           b,
 					Registry:          reg,
 					AllowPatchFeature: p.AllowPatchFeature,
-					TypeFromName: typeFromName,
+					TypeFromName:      typeFromName,
 				}); err != nil {
 					return "", err
 				}
@@ -242,7 +242,7 @@ It translates gRPC into RESTful JSON APIs.
 */{{end}}
 package {{.GoPkg.Name}}
 import (
-	github_com_prysmaticlabs_eth2_types "github.com/prysmaticlabs/eth2-types"
+	github_com_prysmaticlabs_prysm_consensus_types_primitives "github.com/prysmaticlabs/prysm/consensus-types/primitives"
 	emptypb "github.com/golang/protobuf/ptypes/empty"
 	"github.com/golang/protobuf/ptypes/empty"
 	{{range $i := .Imports}}{{if $i | printf "%q" | ne "github.com/golang/protobuf/ptypes/empty"}}{{$i | printf "%s\n"}}{{end}}{{end}}
@@ -255,7 +255,7 @@ var _ status.Status
 var _ = runtime.String
 var _ = utilities.NewDoubleArray
 var _ = metadata.Join
-var _ = github_com_prysmaticlabs_eth2_types.Epoch(0)
+var _ = github_com_prysmaticlabs_prysm_consensus_types_primitives.Epoch(0)
 var _ = emptypb.Empty{}
 var _ = empty.Empty{}
 `))
