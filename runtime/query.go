@@ -236,7 +236,7 @@ func parseField(fieldDescriptor protoreflect.FieldDescriptor, value string) (pro
 	case protoreflect.BytesKind:
 		v, err := base64.URLEncoding.DecodeString(value)
 		if err != nil {
-			// From the start Prysm's v1alpha1 endpoints made use of passing NOT URL-encoded base64 values in the URL.
+			// From the start Qrysm's v1alpha1 endpoints made use of passing NOT URL-encoded base64 values in the URL.
 			// For backward compatibility we can't assume byte arrays are URL-encoded.
 			v, err = base64.StdEncoding.DecodeString(value)
 			if err != nil {
